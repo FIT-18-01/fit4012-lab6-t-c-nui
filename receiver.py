@@ -26,7 +26,6 @@ def receive_key_packet() -> bytes:
     """Listen on KEY_PORT and receive key_length + key + iv."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server.settimeout(TIMEOUT)
         server.bind((HOST, KEY_PORT))
         server.listen(1)
         conn, _ = server.accept()
@@ -43,7 +42,6 @@ def receive_data_packet() -> bytes:
     """Listen on DATA_PORT and receive length + ciphertext."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
         server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        server.settimeout(TIMEOUT)
         server.bind((HOST, DATA_PORT))
         server.listen(1)
         conn, _ = server.accept()
