@@ -17,18 +17,18 @@ Lab này kế thừa ý tưởng từ Lab 3 DES Socket, nhưng nâng cấp theo 
 ## Team members
 
 - **Thành viên 1**: Nguyễn Vân Đạt - MSSV: 1871020131
-- **Thành viên 2**: TODO_MEMBER_2 - MSSV: TODO_MEMBER_2_ID
+- **Thành viên 2**: Trần Duy Tuấn - MSSV: 1876102004
 
 ## Task division
 
 - **Thành viên 1 phụ trách chính**: Cài đặt sender.py và aes_socket_utils.py
-- **Thành viên 2 phụ trách chính**: TODO_ROLE_MEMBER_2
+- **Thành viên 2 phụ trách chính**: Cài đặt receiver viết output và soát lỗi bài lab
 - **Phần làm chung**: Report, threat model, peer review response
 
 ## Demo roles
 
 - **Demo Sender / kênh khóa / log gửi**: Nguyễn Vân Đạt
-- **Demo Receiver / kênh dữ liệu / giải mã**: TODO_DEMO_ROLE_2
+- **Demo Receiver / kênh dữ liệu / giải mã**: Trần Duy Tuấn
 - **Cả hai cùng trả lời threat model và ethics**: Cả hai
 
 ---
@@ -200,7 +200,7 @@ CI sẽ kiểm tra:
 - Có test tamper.
 - Có test local sender-receiver.
 - README có thông tin nhóm 2 người.
-- Các file báo cáo không còn `TODO_STUDENT`.
+- Các file báo cáo không còn placeholder .
 - Có ít nhất 1 file log thật trong `logs/`.
 
 ---

@@ -3,7 +3,7 @@
 ## Thông tin nhóm
 
 - Thành viên 1: Nguyễn Vân Đạt
-- Thành viên 2: TODO_STUDENT
+- Thành viên 2: Trần Duy Tuấn
 
 ## Assets
 
