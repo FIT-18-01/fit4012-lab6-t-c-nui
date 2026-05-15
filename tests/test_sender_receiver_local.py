@@ -23,6 +23,7 @@ def wait_for_output(process, text: str, timeout: float = 5.0) -> str:
             collected.append(line)
             if text in line:
                 return "".join(collected)
+        time.sleep(0.01)  # Small sleep to avoid busy-waiting
     raise AssertionError(f"Không thấy output '{text}'. Output đã nhận: {''.join(collected)}")
 
 
@@ -33,6 +34,7 @@ def test_local_sender_receiver_roundtrip():
     receiver_env = os.environ.copy()
     receiver_env.update({
         "PYTHONUNBUFFERED": "1",
+        "PYTHONIOENCODING": "utf-8",
         "RECEIVER_HOST": "127.0.0.1",
         "DATA_PORT": str(data_port),
         "KEY_PORT": str(key_port),
@@ -42,10 +44,12 @@ def test_local_sender_receiver_roundtrip():
     sender_env = os.environ.copy()
     sender_env.update({
         "PYTHONUNBUFFERED": "1",
+        "PYTHONIOENCODING": "utf-8",
         "SERVER_IP": "127.0.0.1",
         "DATA_PORT": str(data_port),
         "KEY_PORT": str(key_port),
         "MESSAGE": "Xin chao FIT4012 - local AES integration test",
+        "INPUT_FILE": "",  # Clear INPUT_FILE to use MESSAGE instead
     })
 
     receiver = subprocess.Popen(
@@ -55,10 +59,15 @@ def test_local_sender_receiver_roundtrip():
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
+        encoding='utf-8',
+        errors='replace',
     )
 
     try:
         first_output = wait_for_output(receiver, "kênh khóa")
+        
+        # Give receiver time to bind sockets before sender connects
+        time.sleep(0.5)
 
         sender = subprocess.run(
             [sys.executable, "sender.py"],
@@ -66,9 +75,17 @@ def test_local_sender_receiver_roundtrip():
             env=sender_env,
             capture_output=True,
             text=True,
+            encoding='utf-8',
+            errors='replace',
             timeout=10,
-            check=True,
         )
+        
+        if sender.returncode != 0:
+            raise AssertionError(
+                f"Sender failed with exit code {sender.returncode}\n"
+                f"STDOUT:\n{sender.stdout}\n"
+                f"STDERR:\n{sender.stderr}"
+            )
 
         receiver_out, _ = receiver.communicate(timeout=10)
         full_receiver_output = first_output + receiver_out
